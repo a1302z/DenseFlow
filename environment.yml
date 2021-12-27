@@ -1,0 +1,7 @@
+name: denseflow
+channels:
+  - anaconda
+  - conda-forge
+dependencies: 
+  - pip
+  - python

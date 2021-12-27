@@ -1,0 +1,90 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.30
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.5
+    t:
+      1:
+      - 1
+      - 5
+      2:
+      - 1
+      - 5
+      4: 3.8.5
+      5: 0.10.30
+      8:
+      - 5
+augmentation:
+  desc: null
+  value: eta
+batch_size:
+  desc: null
+  value: 16
+block_conf:
+  desc: null
+  value:
+  - 6
+  - 4
+  - 1
+checkpointing:
+  desc: null
+  value: false
+dataset:
+  desc: null
+  value: logo
+epochs:
+  desc: null
+  value: 10
+gamma:
+  desc: null
+  value: 0.95
+growth_rate:
+  desc: null
+  value: 10
+layer_mid_chnls:
+  desc: null
+  value:
+  - 48
+  - 48
+  - 48
+layers_conf:
+  desc: null
+  value:
+  - 5
+  - 6
+  - 20
+lr:
+  desc: null
+  value: 0.001
+momentum:
+  desc: null
+  value: 0.9
+momentum_sqr:
+  desc: null
+  value: 0.999
+num_bits:
+  desc: null
+  value: 8
+num_classes:
+  desc: null
+  value: 10
+optimizer:
+  desc: null
+  value: adamax
+resume:
+  desc: null
+  value: null
+seed:
+  desc: null
+  value: 0
+use_grad_norm:
+  desc: null
+  value: 0.0
+warmup:
+  desc: null
+  value: 5000
