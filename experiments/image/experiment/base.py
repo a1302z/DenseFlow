@@ -151,7 +151,7 @@ class BaseExperiment(object):
 
             # Log
             self.save_metrics()
-            self.log_fn(epoch, train_dict, eval_dict)
+            self.log_fn(epoch + 1, train_dict, eval_dict)
 
             # Checkpoint
             self.current_epoch += 1

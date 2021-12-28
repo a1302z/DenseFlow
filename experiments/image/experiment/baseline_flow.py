@@ -82,11 +82,14 @@ class FlowExperiment(BaseExperiment):
             model = DataParallelDistribution(model)
 
         # Init parent
+        base_name = args.name
         log_path = os.path.join(self.log_base, data_id, model_id, optim_id, args.name)
-        base_log_path = log_path
+        i = 0
         while os.path.isdir(log_path):
-            i = 0
-            log_path += f"{i}"
+            args.name = f"{base_name}_{i}"
+            log_path = os.path.join(
+                self.log_base, data_id, model_id, optim_id, args.name
+            )
             i += 1
         super(FlowExperiment, self).__init__(
             model=model,
@@ -120,8 +123,10 @@ class FlowExperiment(BaseExperiment):
                 "args", get_args_table(args_dict).get_html_string(), global_step=0
             )
         if args.log_wandb:
-            wandb.init(
-                config=args_dict, project=args.project, id=args.name, dir=self.log_path
+            self.wandb = wandb.init(
+                config=args_dict,
+                project=args.project,  # id=args.name,
+                dir=self.log_path,
             )
 
     def log_fn(self, epoch, train_dict, eval_dict):
@@ -143,11 +148,15 @@ class FlowExperiment(BaseExperiment):
         # Weights & Biases
         if self.args.log_wandb:
             for metric_name, metric_value in train_dict.items():
-                wandb.log({"base/{}".format(metric_name): metric_value}, step=epoch + 1)
+                self.wandb.log(
+                    {"base_{}".format(metric_name): metric_value}, step=epoch + 1,
+                )
             if eval_dict:
                 for metric_name, metric_value in eval_dict.items():
-                    wandb.log(
-                        {"eval/{}".format(metric_name): metric_value}, step=epoch + 1
+                    self.wandb.log(
+                        {"eval_{}".format(metric_name): metric_value},
+                        step=epoch + 1,
+                        commit=True,
                     )
 
     def resume(self):

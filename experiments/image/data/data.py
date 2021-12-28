@@ -59,7 +59,9 @@ def get_data(args):
 
     # Dataset
     data_shape = get_data_shape(args.dataset)
-    pil_transforms = get_augmentation(args.augmentation, args.dataset, data_shape)
+    pil_transforms, test_transform = get_augmentation(
+        args.augmentation, args.dataset, data_shape
+    )
     if args.dataset == "cifar10":
         dataset = CIFAR10(num_bits=args.num_bits, pil_transforms=pil_transforms)
     elif args.dataset == "celeba":
@@ -75,7 +77,11 @@ def get_data(args):
     elif args.dataset == "mnist":
         dataset = MNIST(num_bits=args.num_bits, pil_transforms=pil_transforms)
     elif args.dataset == "logo":
-        dataset = Logo(num_bits=args.num_bits, pil_transforms=pil_transforms)
+        dataset = Logo(
+            num_bits=args.num_bits,
+            pil_transforms=pil_transforms,
+            test_transform=test_transform,
+        )
 
     # Data Loader
     train_loader = DataLoader(
@@ -98,17 +104,26 @@ def get_data(args):
 
 def get_augmentation(augmentation, dataset, data_shape):
     c, h, w = data_shape
+
+    pil_transforms = [
+        Resize(h),
+        RandomCrop(h),
+    ]
+    test_transform = [
+        Resize(h),
+        CenterCrop(h),
+    ]
     if augmentation is None:
-        pil_transforms = []
+        pass
     elif augmentation == "horizontal_flip":
-        pil_transforms = [RandomHorizontalFlip(p=0.5)]
+        pil_transforms += [RandomHorizontalFlip(p=0.5)]
     elif augmentation == "neta":
         assert h == w
         pil_transforms = [
             Pad(int(math.ceil(h * 0.04)), padding_mode="edge"),
             RandomAffine(degrees=0, translate=(0.04, 0.04)),
             Resize(h),
-            CenterCrop(h),
+            RandomCrop(h),
         ]
     elif augmentation == "eta":
         assert h == w
@@ -117,10 +132,10 @@ def get_augmentation(augmentation, dataset, data_shape):
             Pad(int(math.ceil(h * 0.04)), padding_mode="edge"),
             RandomAffine(degrees=0, translate=(0.04, 0.04)),
             Resize(h),
-            CenterCrop(h),
+            RandomCrop(h),
         ]
     # return pt
-    return pil_transforms
+    return pil_transforms, test_transform
 
 
 def get_data_shape(dataset):

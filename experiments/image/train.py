@@ -14,6 +14,7 @@ from model.model_flow import get_model, get_model_id, add_model_args
 # Optim
 from optim.expdecay_flow import get_optim, get_optim_id, add_optim_args
 
+
 ###########
 ## Setup ##
 ###########
@@ -54,15 +55,17 @@ print(args)
 
 torch.backends.cudnn.benchmark = True
 
-exp = FlowExperiment(args=args,
-                     data_id=data_id,
-                     model_id=model_id,
-                     optim_id=optim_id,
-                     train_loader=train_loader,
-                     eval_loader=eval_loader,
-                     model=model,
-                     optimizer=optimizer,
-                     scheduler_iter=scheduler_iter,
-                     scheduler_epoch=scheduler_epoch)
+exp = FlowExperiment(
+    args=args,
+    data_id=data_id,
+    model_id=model_id,
+    optim_id=optim_id,
+    train_loader=train_loader,
+    eval_loader=eval_loader,
+    model=model,
+    optimizer=optimizer,
+    scheduler_iter=scheduler_iter,
+    scheduler_epoch=scheduler_epoch,
+)
 
 exp.run()
